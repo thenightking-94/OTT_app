@@ -1,5 +1,7 @@
 #nav_back {
   height: 192px;
+  position: fixed;
+  top: 0px;
   width: 100%;
 }
 #searchIcon {
@@ -9,6 +11,8 @@
   color: white;
   width: 40px;
   height: 40px;
+  -webkit-animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 #backIcon {
   position: fixed;
@@ -17,19 +21,17 @@
   color: white;
   width: 40px;
   height: 40px;
+  -webkit-animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 #input_box {
-  position: fixed;
-  top: 25px;
-  right: 25px;
+  padding-left: 20px;
   color: black;
-  width: 240px;
-  height: 40px;
+  width: 220px;
+  height: 35px;
   border: none;
   outline: none;
   border-radius: 5px;
-  -webkit-animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 @-webkit-keyframes scale-up-top {
   0% {
@@ -58,4 +60,24 @@
     -webkit-transform-origin: 50% 0%;
     transform-origin: 50% 0%;
   }
+}
+#blackSearchIcon {
+  color: black;
+  width: 25px;
+  height: 25fpx;
+}
+#search_paper {
+  position: fixed;
+  background: white;
+  display: flex;
+  border-radius: 6px;
+  top: 25px;
+  right: 25px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+  height: 40px;
+  -webkit-animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
