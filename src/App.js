@@ -6,17 +6,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Paper } from '@material-ui/core';
 
-
-
-
 const App = () => {
 
-  //React-specific hooks
+  //React-specific Hooks
   const [scr, setScr] = useState(null);
   const mySearch = useRef(null);
-  //Redux-specific hooks
+
+  //Redux-specific Hooks refer https://react-redux.js.org/next/api/hooks
   const val = useSelector(state => state.search_word);
   const showInput = useSelector(state => state.inputbox);
+  const data = useSelector(state => state.items);
   const dispatch = useDispatch();
 
 
@@ -28,16 +27,31 @@ const App = () => {
   }
 
 
-  //mimic componentDidMount to attach a scroll-calculator
+  //mimic componentDidMount to fetch page1 data & scroll-calculation
   useEffect(() => {
+
+    //getting Page1 data on APP-loading
+    let myPromise = fetch("/CONTENTLISTINGPAGE-PAGE1.json", {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_PAGE1_DATA', items: json }));
+
+    //attaching a scroll-event listener for scroll calculation
     window.addEventListener('scroll', calculate_scroll);
     return () => {
       window.removeEventListener('scroll', calculate_scroll);
     }
   }, [])
 
+
   //calculate scrolled distanceF
   const calculate_scroll = () => { if (window.pageYOffset) setScr(window.pageYOffset) }
+
+
 
   useEffect(() => {
     //hide search box if user scrolls , when saerch box is open , without typing anything
@@ -45,11 +59,10 @@ const App = () => {
       dispatch({ type: 'HIDE_SEARCH', inputbox: false });
   }, [scr])
 
-
-
+  
   return (
     <div>
-      {window.innerWidth < 768 &&
+      {window.innerWidth < 768 && data &&
         <div style={{ height: '1200px' }}>
           <img id='nav_back' src={nav_back} />
           {
