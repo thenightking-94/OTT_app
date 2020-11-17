@@ -11,10 +11,12 @@ import ScrollAnimation from 'react-animate-on-scroll';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import nothing_found from '../src/Assets/nothing-found.png';
 
+
 const App = () => {
 
   //React-specific Hooks
   const [scr, setScr] = useState(null);
+  const [isColor, setColor] = useState(false);
   const mySearch = useRef(null);
 
   //React-custom hook for posters
@@ -40,7 +42,6 @@ const App = () => {
     e.preventDefault();
   }
 
-
   //mimic componentDidMount() to fetch page1 data & scroll-calculation
   useEffect(() => {
 
@@ -61,7 +62,6 @@ const App = () => {
     }
   }, [])
 
-
   //calculate scrolled distance
   const calculate_scroll = () => {
     var scr_distance = window.pageYOffset;
@@ -73,7 +73,6 @@ const App = () => {
 
     }
   }
-
 
   useEffect(() => {
 
@@ -109,7 +108,6 @@ const App = () => {
   }, [scr])
   //dependent on computed scroll-state-value
 
-
   //picking image src from react-custom hook
   const pick_src = (str) => {
     var index = null;
@@ -121,6 +119,13 @@ const App = () => {
     return posters[index - 1];
   }
 
+  //changing theme
+  const changeTheme = () => {
+    if (!isColor)
+      setColor(true);
+    if (isColor)
+      setColor(false);
+  }
 
   return (
     <div>
@@ -129,6 +134,7 @@ const App = () => {
         <div className='home' style={{
           maxWidth: window.innerWidth
         }}>
+          <p id='change_theme' onClick={changeTheme} style={{ color: isColor ? 'white' : 'black', background: isColor ? 'black' : 'white' }}>Change Theme</p>
           < img alt='header_background' id='nav_back' src={nav_back} />
           {
             !showInput && <SearchIcon onClick={() => {
@@ -154,13 +160,13 @@ const App = () => {
           }
           {
             data && !searchPerformed &&
-            <div id='movie_grid_block'>
+            <div id='movie_grid_block' style={{ background: isColor ? 'white' : 'black' }}>
               <Grid className='card_deck' container>
                 {!page2append && !page3append &&
                   data.map(item =>
                     <Grid item xs={4}>
                       <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
-                      <p id='poster_info'>{item.name}</p>
+                      <p id='poster_info' style={{ color: isColor ? 'black' : 'white' }}>{item.name}</p>
                       <Divider id='divider' />
                     </Grid>
                   )
@@ -170,7 +176,7 @@ const App = () => {
                     <Grid item xs={4}>
                       <ScrollAnimation delay={200} animateIn="fadeIn">
                         <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
-                        <p id='poster_info'>{item.name}</p>
+                        <p id='poster_info' style={{ color: isColor ? 'black' : 'white' }}>{item.name}</p>
                         <Divider id='divider' />
                       </ScrollAnimation>
                     </Grid>
@@ -182,14 +188,14 @@ const App = () => {
           }
           {
             data && searchPerformed && searchResults.length > 0 &&
-            <div id='movie_grid_block'>
+            <div id='movie_grid_block' style={{ background: isColor ? 'white' : 'black' }}>
               <Grid className='card_deck' container>
                 {
                   searchResults.map(item =>
                     <Grid item xs={4}>
                       <ScrollAnimation delay={200} animateIn="fadeIn">
                         <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
-                        <p id='poster_info'>{item.name}</p>
+                        <p id='poster_info' style={{ color: isColor ? 'black' : 'white' }}>{item.name}</p>
                         <Divider id='divider' />
                       </ScrollAnimation>
                     </Grid>
@@ -202,7 +208,7 @@ const App = () => {
           {
             data && searchPerformed && searchResults.length == 0 &&
             <div id='nothing_found_div'>
-              <img id='nothing_found' src={nothing_found} />
+              <img alt='nothing_found' id='nothing_found' src={nothing_found} />
               <p>Nothing Found....</p>
             </div>
           }

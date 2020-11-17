@@ -32,6 +32,7 @@ const First_reducer = (state, action) => {
     if (action.type === 'GOT_RENEWED_ARRAY_DATA_AFTER_PAGE_3_CONCATENATION')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata });
 
+        
     //search computation in reducer-itself
     if (action.type === 'SEARCH_WORD') {
         if (state.arraydata) {
@@ -48,7 +49,7 @@ const First_reducer = (state, action) => {
 
     }
 
-    if (action.type == 'CLEAR_SEARCH')
+    if (action.type === 'CLEAR_SEARCH')
         return ({ ...state, performSearch: action.performSearch, searchRes: action.searchRes, search_word: action.search_word });
 
     return state

@@ -16,7 +16,7 @@
 }
 #searchIcon {
   position: fixed;
-  top: 45px;
+  top: 50px;
   right: 25px;
   color: white;
   width: 40px;
@@ -109,10 +109,6 @@
 #poster_info {
   font-family: Titillium !important;
   font-size: 15px !important;
-  color: white;
-}
-#movie_grid_block {
-  background-color: black;
 }
 #divider {
   background-color: transparent;
@@ -131,7 +127,7 @@
 }
 #clear_icon {
   position: fixed;
-  top: 42px;
+  top: 48px;
   left: 263px;
   color: #ad1b02;
   width: 32px;
@@ -147,4 +143,15 @@
 #nothing_found {
   width: 170px;
   height: 180px;
+}
+#change_theme {
+  top: 10px;
+  position: fixed;
+  z-index: 100;
+  padding: 3px;
+  right: 20px;
+  font-family: Titillium !important;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 12px !important;
 }
