@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 //Initial state object of the APP_data
 const state = {
-    items: null,
+    arraydata: null,
     isLoaded: false,
     search_word: null,
     isSearched: false,
@@ -19,7 +19,7 @@ const First_reducer = (state, action) => {
     if (action.type == 'SEARCH_WORD')
         return ({ ...state, search_word: action.search_word });
     if (action.type == 'GET_PAGE1_DATA')
-        return ({ ...state, items: action.items })
+        return ({ ...state, arraydata: action.arraydata })
 
     return state
 }
@@ -28,9 +28,8 @@ const First_reducer = (state, action) => {
 
 //Sore
 const Store = createStore(First_reducer, state);
-
 export { Store };
 
 
-console.log(Store.getState());
+//console.log(Store.getState());
 
