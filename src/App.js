@@ -22,7 +22,6 @@ const App = () => {
   const val = useSelector(state => state.search_word);
   const showInput = useSelector(state => state.inputbox);
   const data = useSelector(state => state.arraydata);
-  const page1load = useSelector(state => state.page1Load);
   const title_data = useSelector(state => state.titledata);
   const page2append = useSelector(state => state.page2Append);
   const page3append = useSelector(state => state.page3Append);
@@ -50,7 +49,6 @@ const App = () => {
       }
     })
     myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_PAGE1_ARRAY_DATA', arraydata: json.page["content-items"].content, titledata: json.page.title }));
-    dispatch({ type: 'PAGE1_LOAD', page1Load: true });
 
     //attaching a scroll-event listener for scroll calculation
     window.addEventListener('scroll', calculate_scroll);
@@ -100,8 +98,8 @@ const App = () => {
               'Content-Type': 'application/json'
             }
           })
-          PromisePage2.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE2_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
-          dispatch({ type: 'ASYNC_PAGE2_DATA_FETCH_AND_CONCATENATION_STARTED', page2Append: true });
+          PromisePage2.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE_2_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'ASYNC_PAGE_2_DATA_FETCH_AND_CONCATENATION_STARTED', page2Append: true });
         }
 
         //Load and append PAGE3 data and run the fetch() method only once after users scrolls 65% threshold of new scrollheight
@@ -113,8 +111,8 @@ const App = () => {
               'Content-Type': 'application/json'
             }
           })
-          PromisePage3.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE3_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
-          dispatch({ type: 'ASYNC_PAGE3_DATA_FETCH_AND_CONCATENATION_STARTED', page3Append: true });
+          PromisePage3.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE_3_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'ASYNC_PAGE_3_DATA_FETCH_AND_CONCATENATION_STARTED', page3Append: true });
         }
 
       }
