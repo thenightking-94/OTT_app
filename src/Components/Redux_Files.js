@@ -4,7 +4,8 @@ import { createStore } from 'redux';
 const state = {
     arraydata: null,
     titledata: '',
-    isLoaded: false,
+    page2Append: false,
+    page3Append: false,
     search_word: null,
     isSearched: false,
     inputbox: false
@@ -21,14 +22,23 @@ const First_reducer = (state, action) => {
         return ({ ...state, search_word: action.search_word });
     if (action.type == 'GET_PAGE1_ARRAY_DATA')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
-    if (action.type == 'GET_RENEWED_ARRAY_DATA')
+    if (action.type == 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE2_ADDITION')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
+    if (action.type == 'PAGE2_DATA_FETCHED_AND_APPENDED')
+        return ({ ...state, page2Append: action.page2Append });
+    if (action.type == 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE3_ADDITION')
+        return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
+    if (action.type == 'PAGE3_DATA_FETCHED_AND_APPENDED')
+        return ({ ...state, page3Append: action.page3Append });
+
+
+
     return state
 }
 
 
 
-//Sore
+//Store
 const Store = createStore(First_reducer, state);
 export { Store };
 

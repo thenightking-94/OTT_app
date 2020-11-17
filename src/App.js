@@ -12,16 +12,17 @@ const App = () => {
   //React-specific Hooks
   const [scr, setScr] = useState(null);
   const mySearch = useRef(null);
-  const [sec, setSec] = useState(false);
 
   //React-custom hook for posters
   let posters = Posters();
 
-  //Redux-specific Hooks refer https://react-redux.js.org/next/api/hooks
+  //Redux-specific Hooks please refer https://react-redux.js.org/next/api/hooks
   const val = useSelector(state => state.search_word);
   const showInput = useSelector(state => state.inputbox);
   const data = useSelector(state => state.arraydata);
   const title_data = useSelector(state => state.titledata);
+  const page2append = useSelector(state => state.page2Append);
+  const page3append = useSelector(state => state.page3Append);
   const dispatch = useDispatch();
 
 
@@ -36,7 +37,7 @@ const App = () => {
   //mimic componentDidMount() to fetch page1 data & scroll-calculation
   useEffect(() => {
 
-    //getting Page1 data on APP-loading
+    //getting PAGE1 data on APP-loading
     let myPromise = fetch("/CONTENTLISTINGPAGE-PAGE1.json", {
       method: 'GET',
       headers: {
@@ -73,14 +74,19 @@ const App = () => {
   }, [data, title_data])
 
   useEffect(() => {
+
     //hide search box if user scrolls , when saerch box is open , without typing anything
     if (!val && showInput && scr)
       dispatch({ type: 'HIDE_SEARCH', inputbox: false });
 
+
     if (scr) {
       var el = document.querySelector("div[id='movie_grid_block']");
+
       if (el) {
-        if (!sec && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.63 * el.getBoundingClientRect().height)) {
+
+        //Load and append PAGE2 data and run the fetch() method only once after users scrolls 60% threshold scrollheight
+        if (!page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.6 * el.getBoundingClientRect().height)) {
           const myPromise = fetch("/CONTENTLISTINGPAGE-PAGE2.json", {
             method: 'GET',
             headers: {
@@ -88,9 +94,21 @@ const App = () => {
               'Content-Type': 'application/json'
             }
           })
-          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
-          //checker state variable to load second page data and run the fetch() method only once after users scrolls 65% threshold scrollheight
-          setSec(true);
+          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE2_ADDITION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'PAGE2_DATA_FETCHED_AND_APPENDED', page2Append: true });
+        }
+
+        //Load and append PAGE3 data and run the fetch() method only once after users scrolls 65% threshold of new scrollheight
+        if (!page3append && page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.65 * el.getBoundingClientRect().height)) {
+          const myPromise = fetch("/CONTENTLISTINGPAGE-PAGE3.json", {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE3_ADDITION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'PAGE3_DATA_FETCHED_AND_APPENDED', page3Append: true });
         }
 
       }
@@ -98,21 +116,28 @@ const App = () => {
     }
   }, [scr])
 
+
   //picking image src from react-custom hook
   const pick_src = (str) => {
-    if (str)
-      var index = Number(str[6]);
+    var index = null;
+    if (str) {
+      index = Number(str[6]);
+      if (!(index >= 0 && index <= 9))
+        return posters[posters.length - 1];
+    }
+
     return posters[index - 1];
   }
+
 
   return (
     <div>
       {window.innerWidth > 768 && <span id='open_desk_msg'>Switch to Mobile Device</span>}
       {window.innerWidth < 768 && data &&
         <div className='home' style={{
-          maxWidth: window.innerWidth, height: '3000px'
+          maxWidth: window.innerWidth
         }}>
-          < img id='nav_back' src={nav_back} />
+          < img alt='header_background' id='nav_back' src={nav_back} />
           {
             !showInput && <SearchIcon onClick={() => {
               { dispatch({ type: 'SHOW_SEARCH', inputbox: true }) }
