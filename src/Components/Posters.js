@@ -9,8 +9,8 @@ import poster8 from '../Assets/poster8.jpg';
 import poster9 from '../Assets/poster9.jpg';
 
 const Posters = (array = [poster1, poster2, poster3, poster4, poster5, poster6, poster7, poster8, poster9]) => {
-    //creating a posters array-object from the imported image-objects
-    var posters_array = new Array(array);
+    //creating a posters Array-object from the imported image-objects
+    var posters_array = array;
     return posters_array;
 }
 

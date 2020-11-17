@@ -11,8 +11,8 @@
   color: white;
   width: 40px;
   height: 40px;
-  -webkit-animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  -webkit-animation: scale-up-top 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 #backIcon {
   position: fixed;
@@ -21,8 +21,8 @@
   color: white;
   width: 40px;
   height: 40px;
-  -webkit-animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: scale-up-top 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  -webkit-animation: scale-up-top 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 #input_box {
   padding-left: 20px;
@@ -78,15 +78,15 @@
   align-items: center;
   width: 260px;
   height: 40px;
-  -webkit-animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: scale-up-top 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  -webkit-animation: scale-up-top 0.7s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.7s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 .title_typo {
   font-family: Titillium !important;
   font-size: 21px !important;
   position: fixed;
   top: 60px;
-  left: 65px;
+  left: 67px;
   color: white;
   height: 40px;
 }
@@ -95,4 +95,16 @@
   padding: 10px;
   margin-top: 192px;
   width: 100%;
+}
+#poster_info {
+  font-family: Titillium !important;
+  font-size: 15px !important;
+  color: white;
+}
+#movie_grid_block {
+  background-color: black;
+}
+#divider {
+  background-color: transparent;
+  height: 45px;
 }

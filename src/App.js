@@ -4,7 +4,7 @@ import nav_back from '../src/Assets/nav_bar.png';
 import '../src/Css/Page_css.css';
 import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Paper, Grid, Typography } from '@material-ui/core';
+import { Paper, Grid, Typography, Divider } from '@material-ui/core';
 import Posters from '../src/Components/Posters';
 
 const App = () => {
@@ -52,12 +52,14 @@ const App = () => {
   }, [])
 
 
-  //calculate scrolled distanceF
-  const calculate_scroll = () => { if (window.pageYOffset) setScr(window.pageYOffset) }
+  //calculate scrolled distance
+  const calculate_scroll = () => {
+    if (window.pageYOffset)
+      setScr(window.pageYOffset)
+  }
 
   useEffect(() => {
     console.log(data)
-    console.log(Posters)
   }, [data])
 
   useEffect(() => {
@@ -66,12 +68,17 @@ const App = () => {
       dispatch({ type: 'HIDE_SEARCH', inputbox: false });
   }, [scr])
 
+  //picking image src from react-custom hook
+  const pick_src = (str) => {
+    var index = Number(str[6]);
+    return posters[index - 1];
+  }
 
   return (
     <div>
       {window.innerWidth < 768 && data &&
         <div style={{
-          maxWidth: window.innerWidth
+          maxWidth: window.innerWidth, height: '4400px'
         }}>
           < img id='nav_back' src={nav_back} />
           {
@@ -93,16 +100,20 @@ const App = () => {
           }
           {
             data &&
-            <Grid className='card_deck' container spacing={12}>
-              {
-                data.page["content-items"].content.map(item =>
-                  <Grid item xs={4}>
-                    {item.name}
-                  </Grid>
-                )
-              }
+            <div id='movie_grid_block'>
+              <Grid className='card_deck' container>
+                {
+                  data.page["content-items"].content.map(item =>
+                    <Grid item xs={4}>
+                      <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
+                      <p id='poster_info'>{item.name}</p>
+                      <Divider id='divider' />
+                    </Grid>
+                  )
+                }
 
-            </Grid>
+              </Grid>
+            </div>
           }
 
 
