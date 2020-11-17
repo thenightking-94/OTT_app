@@ -9,6 +9,7 @@ import Posters from '../src/Components/Posters';
 import "animate.css/animate.min.css";
 import ScrollAnimation from 'react-animate-on-scroll';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import nothing_found from '../src/Assets/nothing-found.png';
 
 const App = () => {
 
@@ -28,14 +29,13 @@ const App = () => {
   const page3append = useSelector(state => state.page3Append);
   const searchPerformed = useSelector(state => state.performSearch);
   const searchResults = useSelector(state => state.searchRes);
-
   const dispatch = useDispatch();
 
 
   const getSearchedResults = (e) => {
     var res = mySearch.current.value;
     dispatch({ type: 'SEARCH_WORD', search_word: res });
-    dispatch({ type: 'HIDE_SEARCH', inputbox: false });
+    dispatch({ type: 'HIDE_SEARCH_BAR', inputbox: false });
     e.preventDefault();
   }
 
@@ -73,19 +73,12 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    if (searchPerformed) {
-      console.log(searchResults)
-    }
-    console.log(data)
-  }, [data, searchPerformed, searchResults])
-
 
   useEffect(() => {
 
     //hide search box if user scrolls , when saerch box is open , without typing anything
     if (!val && showInput && scr)
-      dispatch({ type: 'HIDE_SEARCH', inputbox: false });
+      dispatch({ type: 'HIDE_SEARCH_BAR', inputbox: false });
 
 
     if (scr) {
@@ -113,7 +106,7 @@ const App = () => {
       }
     }
   }, [scr])
-  //dependent on scroll-state-value
+  //dependent on computed scroll-state-value
 
 
   //picking image src from react-custom hook
@@ -138,7 +131,7 @@ const App = () => {
           < img alt='header_background' id='nav_back' src={nav_back} />
           {
             !showInput && <SearchIcon onClick={() => {
-              { dispatch({ type: 'SHOW_SEARCH', inputbox: true }) }
+              { dispatch({ type: 'SHOW_SEARCH_BAR', inputbox: true }) }
             }} id='searchIcon' />
           }
           <span>
@@ -162,7 +155,6 @@ const App = () => {
             data && !searchPerformed &&
             <div id='movie_grid_block'>
               <Grid className='card_deck' container>
-
                 {!page2append && !page3append &&
                   data.map(item =>
                     <Grid item xs={4}>
@@ -206,8 +198,13 @@ const App = () => {
               </Grid>
             </div>
           }
-
-
+          {
+            data && searchPerformed && searchResults.length == 0 &&
+            <div id='nothing_found_div'>
+              <img id='nothing_found' src={nothing_found} />
+              <p>Nothing Found....</p>
+            </div>
+          }
         </div>
       }
     </div >

@@ -16,12 +16,13 @@ const state = {
 //Reducer definition, I am using if-else in preference to normal switch case
 const First_reducer = (state, action) => {
 
-    if (action.type === 'SHOW_SEARCH')
+    if (action.type === 'SHOW_SEARCH_BAR')
         return ({ ...state, inputbox: action.inputbox });
-    if (action.type === 'HIDE_SEARCH')
+    if (action.type === 'HIDE_SEARCH_BAR')
         return ({ ...state, inputbox: action.inputbox });
     if (action.type === 'GET_PAGE1_ARRAY_DATA')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata });
+        
     if (action.type === 'ASYNC_PAGE_2_DATA_FETCH_AND_CONCATENATION_STARTED')
         return ({ ...state, page2Append: action.page2Append });
     if (action.type === 'GOT_RENEWED_ARRAY_DATA_AFTER_PAGE_2_CONCATENATION')
@@ -31,6 +32,7 @@ const First_reducer = (state, action) => {
     if (action.type === 'GOT_RENEWED_ARRAY_DATA_AFTER_PAGE_3_CONCATENATION')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata });
 
+    //search computation in reducer-itself
     if (action.type === 'SEARCH_WORD') {
         if (state.arraydata) {
             var word = action.search_word;

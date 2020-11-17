@@ -137,3 +137,14 @@
   width: 32px;
   height: 40px;
 }
+#nothing_found_div {
+  font-family: Titillium !important;
+  font-size: 18px !important;
+  left: 30%;
+  top: 40%;
+  position: fixed;
+}
+#nothing_found {
+  width: 170px;
+  height: 180px;
+}
