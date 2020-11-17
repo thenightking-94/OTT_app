@@ -1,12 +1,12 @@
 #nav_back {
-  height: 192px;
+  height: 152px;
   position: fixed;
   top: 0px;
   width: 100%;
 }
 #searchIcon {
   position: fixed;
-  top: 55px;
+  top: 45px;
   right: 25px;
   color: white;
   width: 40px;
@@ -16,7 +16,7 @@
 }
 #backIcon {
   position: fixed;
-  top: 55px;
+  top: 45px;
   left: 25px;
   color: white;
   width: 40px;
@@ -71,7 +71,7 @@
   background: white;
   display: flex;
   border-radius: 6px;
-  top: 55px;
+  top: 45px;
   right: 25px;
   flex-direction: row;
   justify-content: space-between;
@@ -85,7 +85,7 @@
   font-family: Titillium !important;
   font-size: 21px !important;
   position: fixed;
-  top: 60px;
+  top: 50px;
   left: 67px;
   color: white;
   height: 40px;
@@ -93,7 +93,7 @@
 .card_deck {
   text-align: center;
   padding: 10px;
-  margin-top: 192px;
+  margin-top: 152px;
   width: 100%;
 }
 #poster_info {

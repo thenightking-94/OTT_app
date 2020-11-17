@@ -1,8 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore } from 'redux';
 
 //Initial state object of the APP_data
 const state = {
     arraydata: null,
+    titledata: '',
     isLoaded: false,
     search_word: null,
     isSearched: false,
@@ -18,8 +19,8 @@ const First_reducer = (state, action) => {
         return ({ ...state, inputbox: action.inputbox })
     if (action.type == 'SEARCH_WORD')
         return ({ ...state, search_word: action.search_word });
-    if (action.type == 'GET_PAGE1_DATA')
-        return ({ ...state, arraydata: action.arraydata })
+    if (action.type == 'GET_PAGE1_ARRAY_DATA')
+        return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
 
     return state
 }
