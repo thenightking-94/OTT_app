@@ -6,6 +6,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Paper, Grid, Typography, Divider } from '@material-ui/core';
 import Posters from '../src/Components/Posters';
+import "animate.css/animate.min.css";
+import ScrollAnimation from 'react-animate-on-scroll';
 
 const App = () => {
 
@@ -20,9 +22,11 @@ const App = () => {
   const val = useSelector(state => state.search_word);
   const showInput = useSelector(state => state.inputbox);
   const data = useSelector(state => state.arraydata);
+  const page1load = useSelector(state => state.page1Load);
   const title_data = useSelector(state => state.titledata);
   const page2append = useSelector(state => state.page2Append);
   const page3append = useSelector(state => state.page3Append);
+
   const dispatch = useDispatch();
 
 
@@ -46,6 +50,7 @@ const App = () => {
       }
     })
     myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_PAGE1_ARRAY_DATA', arraydata: json.page["content-items"].content, titledata: json.page.title }));
+    dispatch({ type: 'PAGE1_LOAD', page1Load: true });
 
     //attaching a scroll-event listener for scroll calculation
     window.addEventListener('scroll', calculate_scroll);
@@ -73,6 +78,7 @@ const App = () => {
     console.log(title_data)
   }, [data, title_data])
 
+
   useEffect(() => {
 
     //hide search box if user scrolls , when saerch box is open , without typing anything
@@ -87,28 +93,28 @@ const App = () => {
 
         //Load and append PAGE2 data and run the fetch() method only once after users scrolls 60% threshold scrollheight
         if (!page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.6 * el.getBoundingClientRect().height)) {
-          const myPromise = fetch("/CONTENTLISTINGPAGE-PAGE2.json", {
+          const PromisePage2 = fetch("/CONTENTLISTINGPAGE-PAGE2.json", {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
           })
-          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE2_ADDITION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
-          dispatch({ type: 'PAGE2_DATA_FETCHED_AND_APPENDED', page2Append: true });
+          PromisePage2.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE2_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'ASYNC_PAGE2_DATA_FETCH_AND_CONCATENATION_STARTED', page2Append: true });
         }
 
         //Load and append PAGE3 data and run the fetch() method only once after users scrolls 65% threshold of new scrollheight
         if (!page3append && page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.65 * el.getBoundingClientRect().height)) {
-          const myPromise = fetch("/CONTENTLISTINGPAGE-PAGE3.json", {
+          const PromisePage3 = fetch("/CONTENTLISTINGPAGE-PAGE3.json", {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
           })
-          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE3_ADDITION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
-          dispatch({ type: 'PAGE3_DATA_FETCHED_AND_APPENDED', page3Append: true });
+          PromisePage3.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE3_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          dispatch({ type: 'ASYNC_PAGE3_DATA_FETCH_AND_CONCATENATION_STARTED', page3Append: true });
         }
 
       }
@@ -159,12 +165,23 @@ const App = () => {
             data &&
             <div id='movie_grid_block'>
               <Grid className='card_deck' container>
-                {
+                {!page2append && !page3append &&
                   data.map(item =>
                     <Grid item xs={4}>
                       <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
                       <p id='poster_info'>{item.name}</p>
                       <Divider id='divider' />
+                    </Grid>
+                  )
+                }
+                {
+                  data.map(item =>
+                    <Grid item xs={4}>
+                      <ScrollAnimation delay={200} animateIn="fadeIn">
+                        <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
+                        <p id='poster_info'>{item.name}</p>
+                        <Divider id='divider' />
+                      </ScrollAnimation>
                     </Grid>
                   )
                 }
