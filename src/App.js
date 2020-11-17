@@ -34,6 +34,7 @@ const App = () => {
 
   const getSearchedResults = (e) => {
     var res = mySearch.current.value;
+    document.documentElement.scrollIntoView();
     dispatch({ type: 'SEARCH_WORD', search_word: res });
     dispatch({ type: 'HIDE_SEARCH_BAR', inputbox: false });
     e.preventDefault();
@@ -83,7 +84,7 @@ const App = () => {
 
     if (scr) {
       var el = document.querySelector("div[id='movie_grid_block']");
-
+      //console.log(scr)
       if (el) {
 
         //Load and append PAGE2 data and run the fetch() method only once after users scrolls 60% threshold scrollheight
