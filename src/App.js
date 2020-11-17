@@ -8,6 +8,7 @@ import { Paper, Grid, Typography, Divider } from '@material-ui/core';
 import Posters from '../src/Components/Posters';
 import "animate.css/animate.min.css";
 import ScrollAnimation from 'react-animate-on-scroll';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const App = () => {
 
@@ -25,6 +26,8 @@ const App = () => {
   const title_data = useSelector(state => state.titledata);
   const page2append = useSelector(state => state.page2Append);
   const page3append = useSelector(state => state.page3Append);
+  const searchPerformed = useSelector(state => state.performSearch);
+  const searchResults = useSelector(state => state.searchRes);
 
   const dispatch = useDispatch();
 
@@ -64,7 +67,6 @@ const App = () => {
     if (scr_distance) {
       if (scr_distance > scr)
         setScr(scr_distance);
-
       if (scr_distance < scr)
         setScr(scr_distance);
 
@@ -72,9 +74,11 @@ const App = () => {
   }
 
   useEffect(() => {
+    if (searchPerformed) {
+      console.log(searchResults)
+    }
     console.log(data)
-    console.log(title_data)
-  }, [data, title_data])
+  }, [data, searchPerformed, searchResults])
 
 
   useEffect(() => {
@@ -92,33 +96,24 @@ const App = () => {
         //Load and append PAGE2 data and run the fetch() method only once after users scrolls 60% threshold scrollheight
         if (!page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.6 * el.getBoundingClientRect().height)) {
           const PromisePage2 = fetch("/CONTENTLISTINGPAGE-PAGE2.json", {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
+            method: 'GET', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
           })
-          PromisePage2.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE_2_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          PromisePage2.then(res => res.json()).then(json => dispatch({ type: 'GOT_RENEWED_ARRAY_DATA_AFTER_PAGE_2_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
           dispatch({ type: 'ASYNC_PAGE_2_DATA_FETCH_AND_CONCATENATION_STARTED', page2Append: true });
         }
 
         //Load and append PAGE3 data and run the fetch() method only once after users scrolls 65% threshold of new scrollheight
         if (!page3append && page2append && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.65 * el.getBoundingClientRect().height)) {
           const PromisePage3 = fetch("/CONTENTLISTINGPAGE-PAGE3.json", {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
+            method: 'GET', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
           })
-          PromisePage3.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA_AFTER_PAGE_3_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          PromisePage3.then(res => res.json()).then(json => dispatch({ type: 'GOT_RENEWED_ARRAY_DATA_AFTER_PAGE_3_CONCATENATION', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
           dispatch({ type: 'ASYNC_PAGE_3_DATA_FETCH_AND_CONCATENATION_STARTED', page3Append: true });
         }
-
       }
-
     }
   }, [scr])
+  //dependent on scroll-state-value
 
 
   //picking image src from react-custom hook
@@ -129,7 +124,6 @@ const App = () => {
       if (!(index >= 0 && index <= 9))
         return posters[posters.length - 1];
     }
-
     return posters[index - 1];
   }
 
@@ -147,7 +141,14 @@ const App = () => {
               { dispatch({ type: 'SHOW_SEARCH', inputbox: true }) }
             }} id='searchIcon' />
           }
-          <span><ArrowBackIcon id='backIcon' /><Typography className='title_typo'>{!showInput && title_data}</Typography></span>
+          <span>
+            {!searchPerformed && <ArrowBackIcon id='backIcon' onClick={() => { document.documentElement.scrollIntoView({ behavior: 'smooth' }); }} />}
+            {searchPerformed && <HighlightOffIcon id='clear_icon' onClick={() => {
+              dispatch({ type: 'CLEAR_SEARCH', performSearch: false, searchRes: [], search_word: '' });
+            }} />}
+            {!searchPerformed && <Typography className='title_typo'>{!showInput && title_data}</Typography>}
+            {searchPerformed && <Typography className='result_typo'>Searched for :&nbsp;&nbsp;{!showInput && val}</Typography>}
+          </span>
           {
             showInput &&
             <form type='submit' onSubmit={getSearchedResults}>
@@ -155,14 +156,13 @@ const App = () => {
                 <input autoComplete='off' type='text' id='input_box' placeholder='Search here ...' ref={mySearch} />
                 <SearchIcon id='blackSearchIcon' onClick={getSearchedResults} />
               </Paper>
-
             </form>
-
           }
           {
-            data &&
+            data && !searchPerformed &&
             <div id='movie_grid_block'>
               <Grid className='card_deck' container>
+
                 {!page2append && !page3append &&
                   data.map(item =>
                     <Grid item xs={4}>
@@ -174,6 +174,25 @@ const App = () => {
                 }
                 {
                   data.map(item =>
+                    <Grid item xs={4}>
+                      <ScrollAnimation delay={200} animateIn="fadeIn">
+                        <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />
+                        <p id='poster_info'>{item.name}</p>
+                        <Divider id='divider' />
+                      </ScrollAnimation>
+                    </Grid>
+                  )
+                }
+
+              </Grid>
+            </div>
+          }
+          {
+            data && searchPerformed && searchResults.length > 0 &&
+            <div id='movie_grid_block'>
+              <Grid className='card_deck' container>
+                {
+                  searchResults.map(item =>
                     <Grid item xs={4}>
                       <ScrollAnimation delay={200} animateIn="fadeIn">
                         <img alt='posters' style={{ width: ((window.innerWidth - 60) / 3), height: '200px' }} src={pick_src(item["poster-image"])} />

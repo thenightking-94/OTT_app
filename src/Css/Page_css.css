@@ -118,3 +118,22 @@
   background-color: transparent;
   height: 45px;
 }
+.result_typo {
+  font-family: Titillium !important;
+  font-size: 17px !important;
+  position: fixed;
+  top: 53px;
+  font-weight: 600 !important;
+  left: 25px;
+  color: white;
+  height: 40px;
+  white-space: pre-wrap;
+}
+#clear_icon {
+  position: fixed;
+  top: 42px;
+  left: 263px;
+  color: #ad1b02;
+  width: 32px;
+  height: 40px;
+}
