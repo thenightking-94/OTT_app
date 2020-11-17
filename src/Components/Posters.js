@@ -7,8 +7,9 @@ import poster6 from '../Assets/poster6.jpg';
 import poster7 from '../Assets/poster7.jpg';
 import poster8 from '../Assets/poster8.jpg';
 import poster9 from '../Assets/poster9.jpg';
+import NodataImage from '../Assets/placeholder_for_missing_posters.png';
 
-const Posters = (array = [poster1, poster2, poster3, poster4, poster5, poster6, poster7, poster8, poster9]) => {
+const Posters = (array = [poster1, poster2, poster3, poster4, poster5, poster6, poster7, poster8, poster9, NodataImage]) => {
     //creating a posters Array-object from the imported image-objects
     var posters_array = array;
     return posters_array;

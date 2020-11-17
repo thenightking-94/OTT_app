@@ -1,8 +1,18 @@
+#open_desk_msg {
+  position: fixed;
+  top: 45%;
+  left: 40%;
+}
+@media (min-width: 768px) {
+  .home {
+    display: none;
+  }
+}
 #nav_back {
   height: 152px;
   position: fixed;
   top: 0px;
-  width: 100%;
+  width: auto;
 }
 #searchIcon {
   position: fixed;

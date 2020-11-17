@@ -12,6 +12,7 @@ const App = () => {
   //React-specific Hooks
   const [scr, setScr] = useState(null);
   const mySearch = useRef(null);
+  const [sec, setSec] = useState(false);
 
   //React-custom hook for posters
   let posters = Posters();
@@ -76,20 +77,40 @@ const App = () => {
     if (!val && showInput && scr)
       dispatch({ type: 'HIDE_SEARCH', inputbox: false });
 
-    console.log(scr)
+    if (scr) {
+      var el = document.querySelector("div[id='movie_grid_block']");
+      if (el) {
+        if (!sec && el.getBoundingClientRect().y < 0 && Math.abs(el.getBoundingClientRect().y) > (0.63 * el.getBoundingClientRect().height)) {
+          const myPromise = fetch("/CONTENTLISTINGPAGE-PAGE2.json", {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+          myPromise.then(res => res.json()).then(json => dispatch({ type: 'GET_RENEWED_ARRAY_DATA', arraydata: data.concat(json.page["content-items"].content), titledata: json.page.title }));
+          //checker state variable to load second page data and run the fetch() method only once after users scrolls 65% threshold scrollheight
+          setSec(true);
+        }
+
+      }
+
+    }
   }, [scr])
 
   //picking image src from react-custom hook
   const pick_src = (str) => {
-    var index = Number(str[6]);
+    if (str)
+      var index = Number(str[6]);
     return posters[index - 1];
   }
 
   return (
     <div>
+      {window.innerWidth > 768 && <span id='open_desk_msg'>Switch to Mobile Device</span>}
       {window.innerWidth < 768 && data &&
-        <div style={{
-          maxWidth: window.innerWidth
+        <div className='home' style={{
+          maxWidth: window.innerWidth, height: '3000px'
         }}>
           < img id='nav_back' src={nav_back} />
           {

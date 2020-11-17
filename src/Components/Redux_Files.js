@@ -21,7 +21,8 @@ const First_reducer = (state, action) => {
         return ({ ...state, search_word: action.search_word });
     if (action.type == 'GET_PAGE1_ARRAY_DATA')
         return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
-
+    if (action.type == 'GET_RENEWED_ARRAY_DATA')
+        return ({ ...state, arraydata: action.arraydata, titledata: action.titledata })
     return state
 }
 
