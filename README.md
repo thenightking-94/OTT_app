@@ -15,3 +15,4 @@ Features and logic implemented :
 4. State-management using Redux.js and Redux-react Hooks.
 5. Search functionality designed and logic implementation in the Reducer function in Redux_files.js
 6. Theme changing facility namely (Light mode / Dark mode) implemented.
+7. The back button acts as a Scroll-up button
